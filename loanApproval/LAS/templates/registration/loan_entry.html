@@ -1,0 +1,21 @@
+{% extends "registration/base.html" %}
+{% load staticfiles %}
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+      {% if created %}
+        <h1>Loan Application successfull!</h1>
+      {% else %}
+        <h3>Just fill out the Loan Application form.</h3>
+
+      <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ loan_form.as_p }}
+          <input type="submit" name="" value="Apply">
+        </form>
+        
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% load extras %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Base</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+</head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <ul class="nav navbar-nav">
+
+{# Django Home Link / Admin Link / Register Link#}
+          <li><a class="navbar-brand" href="{% url 'index' %}">LAS</a></li>
+          {# Some logic on what to display for last item#}
+          {% if user.is_authenticated %}
+            {% if user|has_group:"BankAdmins" %}
+              <li><a class="navbar-link" href="{% url 'index' %}" >BankAdmin</a></li>
+              <li><a href="{% url 'loans:loans_index' loan_status='review' %}">Pending Review Loans</a></li>
+              <li><a href="{% url 'loans:loans_index' loan_status='approved' %}">Approved Loans</a></li>
+              <li><a href="{% url 'loans:loans_index' loan_status='declined' %}">Declined Loans</a></li>
+              <li><a href="{% url 'loans:loans_all' %}">All Applications</a></li>
+              {% else %}
+              <li><a class="navbar-link" href="{% url 'index' %}" >{{ user.username }}</a></li>
+              <li><a href="{% url 'loans:cust_index'  loan_status='approved' %}">Approved Loans</a></li>
+              <li><a href="{% url 'loans:cust_index' loan_status='declined'  %}">Declined Loans</a></li>
+              <li><a href="{% url 'loans:cust_index'  loan_status='review' %}">Pending Loans</a></li>
+              <li><a href="{% url 'loans:cust_index_all'%}">All Applications</a></li>
+              <li><a href="{% url 'loans:create_loan' %}">Apply for a Loan</a></li>  
+              <li><a href="{% url 'edit_profile' %}">Update profile</a></li>
+            {% endif %}
+            <li><a href="{% url 'change_password' %}">Change Password</a></li>
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+          <li><a class="navbar-link" href="{% url 'register' %}">Register</a></li>
+          <li><a class="navbar-link" href="{% url 'user_login' %}">Login</a></li>
+          {% endif %}
+
+</ul>
+      </div>
+    </nav>
+    <div class="container">
+    {% block body_block %}
+    {% endblock %}
+    </div>
+  </body>
+</html>

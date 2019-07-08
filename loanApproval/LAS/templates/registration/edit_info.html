@@ -1,0 +1,32 @@
+{% extends "registration/base.html" %}
+{% load staticfiles %}
+{% load extras %}
+
+
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+        {% if message %}
+          <h1>{{ message }}</h1>
+        {% else %}
+
+          <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if review and user|has_group:"BankAdmins" %}
+              {% if buttons %}
+                <input type="submit" name="approve" value="Approve">
+                <input type="submit" name="decline" value="Declined">
+              {% endif %}
+            {% else %}
+              {% if buttons %}
+               <input type="submit" name="update" value="Update">
+               {% endif %}
+             {% endif %}
+          </form>
+
+        {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "registration/base.html" %}
+{% load staticfiles %}
+{% load extras %}
+
+
+{% block body_block %}
+          {% if empty %}
+          <div class="jumbotron">
+          <div class="container">
+              <h1>Empty</h1>
+          </div>
+        </div>
+              {% else %}
+            {% for key, value in objects|lookup %}
+            <div class="jumbotron">
+            <div class="container"> 
+            {% for field in value %}
+                {% if field.label == "id_proof" %}
+                  <li><b>{{ field.label }}:</b> {{ field.url }}</li>
+                {% else %}
+                  <li><b>{{ field.label }}:</b> {{ field.data }}</li>
+                {% endif %}
+              {% endfor %}
+              {% if approve %}
+                {% if review %}
+                  <a href="{% url 'loans:review_loan' loan_id=key %}"><button type="button">Review</button></a>
+                {% else%}
+                <a href="{% url 'loans:review_loan' loan_id=key %}"><button type="button">View</button></a>
+                {% endif %}
+                {% else%}
+                <a href="{% url 'loans:edit_loan' loan_id=key %}"><button type="button">Edit</button></a>
+              {% endif %}
+            </div>
+          </div>
+
+
+            {% endfor %}
+            {% endif %}
+
+{% endblock %}
